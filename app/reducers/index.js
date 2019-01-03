@@ -1,5 +1,5 @@
-import bluetooth from "./bluetooth";
+import bluetooth from './bluetooth';
 
 export default {
-  bluetooth
+  bluetooth,
 };
