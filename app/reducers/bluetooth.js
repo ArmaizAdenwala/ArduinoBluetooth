@@ -19,7 +19,6 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         status: 'SUCCESS',
         data: action.data,
-        error: null,
       };
 
     case 'BLUETOOTH_FAILURE':
