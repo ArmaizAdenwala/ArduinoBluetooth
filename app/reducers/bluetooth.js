@@ -1,32 +1,32 @@
 const INITIAL_STATE = {
   data: [],
   status: null,
-  error: null
+  error: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case "BLUETOOTH_CONNECT":
+    case 'BLUETOOTH':
       return {
         ...state,
-        status: "loading",
+        status: 'LOADING',
         data: null,
-        error: null
+        error: null,
       };
 
-    case "BLUETOOTH_CONNECT_SUCCESS":
+    case 'BLUETOOTH_SUCCESS':
       return {
         ...state,
-        status: "success",
+        status: 'SUCCESS',
         data: action.data,
-        error: null
+        error: null,
       };
 
-    case "BLUETOOTH_CONNECT_FAILURE":
+    case 'BLUETOOTH_FAILURE':
       return {
         ...state,
-        status: "failure",
-        error: action.error
+        status: 'FAILURE',
+        error: action.error,
       };
 
     default:

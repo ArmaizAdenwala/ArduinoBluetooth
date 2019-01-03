@@ -4,10 +4,17 @@ import styles from './styles/homeStyles';
 import Button from '../components/button';
 
 export default class Home extends Component {
+  _openDoor = () =>
+    this.props.actions.writeToBluetooth(
+      'HC-05',
+      '1',
+      this.props.bluetooth.status,
+    );
+
   render() {
     return (
       <View style={styles.container}>
-        <Button>{'OPEN'}</Button>
+        <Button onPress={this._openDoor}>{'OPEN'}</Button>
       </View>
     );
   }
