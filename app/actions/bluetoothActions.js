@@ -20,24 +20,25 @@ export function setBluetoothSuccess(data) {
     data,
   };
 }
-export function writeToBluetooth(deviceName, writeData, bluetoothStatus) {
+export function connectWriteBluetooth(deviceName, writeData) {
   return async dispatch => {
-    let status = bluetoothStatus;
-    let device = null;
-    let error = null;
-
-    if (status !== 'SUCCESS') {
-      dispatch(setBluetooth());
-      const data = await connectBluetooth(deviceName);
-      status = data.status;
-      device = data.device;
-      error = data.error;
-    }
-    if (status === 'FAILURE') {
+    dispatch(setBluetooth());
+    const { status, error } = await connectBluetooth(deviceName);
+    if (status === 'SUCCESS') {
+      dispatch(writeBluetoothHelper(writeData));
+    } else if (status === 'FAILURE') {
       dispatch(setBluetoothFailure(error));
-    } else if (status === 'SUCCESS') {
-      await writeBluetooth(writeData);
-      dispatch(setBluetoothSuccess(device));
+    }
+  };
+}
+
+export function writeBluetoothHelper(writeData) {
+  return async dispatch => {
+    const { status, error } = await writeBluetooth(writeData);
+    if (status === 'SUCCESS') {
+      dispatch(setBluetoothSuccess());
+    } else {
+      dispatch(setBluetoothFailure(error));
     }
   };
 }

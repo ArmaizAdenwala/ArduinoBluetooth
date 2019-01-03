@@ -12,13 +12,17 @@ export async function connectBluetooth(device) {
     }
     throw new Error('CONNECT_FAILURE');
   } catch (error) {
-    console.warn(error);
     return { status: 'FAILURE', error };
   }
 }
 
 export async function writeBluetooth(data) {
-  await BluetoothSerial.write(data);
+  try {
+    await BluetoothSerial.write(data);
+    return { status: 'SUCCESS' };
+  } catch (error) {
+    return { status: 'FAILURE', error };
+  }
 }
 
 async function _getDeviceIds(device) {

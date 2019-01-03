@@ -6,4 +6,5 @@ export default {
   lightGray: '#F5F5F5',
   darkGray: '#e0e0e0',
   secondaryTitle: '#607d8b',
+  error: '#ef5350',
 };
