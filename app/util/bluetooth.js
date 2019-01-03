@@ -1,27 +1,13 @@
 import BluetoothSerial from 'react-native-bluetooth-serial';
 
 export async function connectBluetooth(device) {
-  try {
-    const deviceIds = await _getDeviceIds(device);
-    if (deviceIds.length === 0) {
-      throw new Error('NO_DEVICE_FOUND');
-    }
-    const data = await BluetoothSerial.connect(deviceIds[0]);
-    if (data.message === `Connected to ${device}`) {
-      return { status: 'SUCCESS', device };
-    }
-    throw new Error('CONNECT_FAILURE');
-  } catch (error) {
-    return { status: 'FAILURE', error };
+  const deviceIds = await _getDeviceIds(device);
+  if (deviceIds.length === 0) {
+    throw new Error('NO_DEVICE_FOUND');
   }
-}
-
-export async function writeBluetooth(data) {
-  try {
-    await BluetoothSerial.write(data);
-    return { status: 'SUCCESS' };
-  } catch (error) {
-    return { status: 'FAILURE', error };
+  const data = await BluetoothSerial.connect(deviceIds[0]);
+  if (data.message !== `Connected to ${device}`) {
+    throw new Error('CONNECT_FAILURE');
   }
 }
 

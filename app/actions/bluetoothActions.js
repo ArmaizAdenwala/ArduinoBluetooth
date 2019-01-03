@@ -1,6 +1,6 @@
 import * as types from '../actionTypes/bluetooth';
-import { connectBluetooth, writeBluetooth } from '../util/bluetooth';
-
+import { connectBluetooth } from '../util/bluetooth';
+import BluetoothSerial from 'react-native-bluetooth-serial';
 export function setBluetooth() {
   return {
     type: types.BLUETOOTH,
@@ -23,22 +23,12 @@ export function setBluetoothSuccess(data) {
 export function connectWriteBluetooth(deviceName, writeData) {
   return async dispatch => {
     dispatch(setBluetooth());
-    const { status, error } = await connectBluetooth(deviceName);
-    if (status === 'SUCCESS') {
-      dispatch(writeBluetoothHelper(writeData));
-    } else if (status === 'FAILURE') {
-      dispatch(setBluetoothFailure(error));
-    }
-  };
-}
-
-export function writeBluetoothHelper(writeData) {
-  return async dispatch => {
-    const { status, error } = await writeBluetooth(writeData);
-    if (status === 'SUCCESS') {
+    try {
+      await connectBluetooth(deviceName);
+      await BluetoothSerial.write(writeData);
       dispatch(setBluetoothSuccess());
-    } else {
-      dispatch(setBluetoothFailure(error));
+    } catch (e) {
+      dispatch(setBluetoothFailure(e));
     }
   };
 }
